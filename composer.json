@@ -22,7 +22,7 @@
     "la-haute-societe/yii2-save-relations-behavior": "^1.7.2",
     "paulzi/yii2-nested-sets": "^1.0",
     "elisdn/yii2-composite-form": "^1.1",
-    "grigor/yii2-project-library": "dev-master"
+    "grigor/yii2-project-library": "^0.0.1"
   },
   "require-dev": {
     "phpunit/phpunit": "8.5.x-dev"
@@ -39,10 +39,6 @@
     {
       "type": "composer",
       "url": "https://asset-packagist.org"
-    },
-    {
-      "type": "path",
-      "url": "../yii2-project-library"
     }
   ]
 }

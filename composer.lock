@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d6df100497f44229c4018028ddb231d",
+    "content-hash": "8a048b38931bcfafd78ee5fd133cf48f",
     "packages": [
         {
             "name": "bower-asset/inputmask",
@@ -249,11 +249,17 @@
         },
         {
             "name": "grigor/yii2-project-library",
-            "version": "dev-master",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cmkcmykmailru/yii2-project-library.git",
+                "reference": "56be9f863de86d66812e4bfb60793a3b92c4afab"
+            },
             "dist": {
-                "type": "path",
-                "url": "../yii2-project-library",
-                "reference": "cdd2003fd64b07c014ddb735d4cb243450cde058"
+                "type": "zip",
+                "url": "https://api.github.com/repos/cmkcmykmailru/yii2-project-library/zipball/56be9f863de86d66812e4bfb60793a3b92c4afab",
+                "reference": "56be9f863de86d66812e4bfb60793a3b92c4afab",
+                "shasum": ""
             },
             "require": {
                 "php": ">=7.4",
@@ -269,11 +275,7 @@
                     "grigor\\library\\": "src"
                 }
             },
-            "scripts": {
-                "tests": [
-                    "php ./vendor/bin/phpunit --colors=always tests"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -288,9 +290,11 @@
                 "extension",
                 "yii2"
             ],
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/cmkcmykmailru/yii2-project-library/issues",
+                "source": "https://github.com/cmkcmykmailru/yii2-project-library/tree/0.0.1"
+            },
+            "time": "2021-04-06T18:57:04+00:00"
         },
         {
             "name": "la-haute-societe/yii2-save-relations-behavior",
@@ -2626,7 +2630,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "grigor/yii2-project-library": 20,
         "phpunit/phpunit": 20
     },
     "prefer-stable": true,
