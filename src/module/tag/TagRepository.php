@@ -8,34 +8,35 @@ use grigor\blog\module\tag\api\TagInterface;
 use grigor\blog\module\tag\api\TagRepositoryInterface;
 use grigor\blog\module\tag\api\TagResourceModelInterface;
 use grigor\library\exceptions\NotFoundException;
+use grigor\library\helpers\DefinitionHelper;
 use grigor\library\repositories\strategies\DeleteStrategyInterface;
 use grigor\library\repositories\strategies\SaveStrategyInterface;
 use yii\db\ActiveQuery;
+use yii\db\ActiveQueryInterface;
 
 class TagRepository implements TagRepositoryInterface
 {
 
-    /**@var \grigor\blog\module\tag\api\TagFactoryInterface $factory */
+    /**@var TagFactoryInterface $factory */
     private $factory;
     private $saveStrategy;
     private $deleteStrategy;
-    private $resourceModel;
 
     /**
      * PostRepository constructor.
-     * @param $factory
+     * @param TagFactoryInterface $factory
+     * @param SaveStrategyInterface $saveStrategy
+     * @param DeleteStrategyInterface $deleteStrategy
      */
     public function __construct(
         TagFactoryInterface $factory,
         SaveStrategyInterface $saveStrategy,
-        DeleteStrategyInterface $deleteStrategy,
-        TagResourceModelInterface $resourceModel
+        DeleteStrategyInterface $deleteStrategy
     )
     {
         $this->factory = $factory;
         $this->saveStrategy = $saveStrategy;
         $this->deleteStrategy = $deleteStrategy;
-        $this->resourceModel = $resourceModel;
     }
 
     public function createTag(TagDto $form): TagInterface
@@ -67,8 +68,9 @@ class TagRepository implements TagRepositoryInterface
         $this->deleteStrategy->delete($tag);
     }
 
-    private function getQuery(): ActiveQuery
+    private function getQuery(): ActiveQueryInterface
     {
-        return $this->resourceModel->getQuery();
+        $tagClass = DefinitionHelper::getDefinition(TagInterface::class);
+        return $tagClass::find();
     }
 }

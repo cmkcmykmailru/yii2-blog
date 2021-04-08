@@ -6,7 +6,6 @@ use grigor\blog\module\post\api\PostFactoryInterface;
 use grigor\blog\module\post\api\PostManageServiceInterface;
 use grigor\blog\module\post\api\PostReadRepositoryInterface;
 use grigor\blog\module\post\api\PostRepositoryInterface;
-use grigor\blog\module\post\api\PostResourceModelInterface;
 use grigor\blog\module\post\api\TrashManageServiceInterface;
 use grigor\blog\module\post\PostEditor;
 use grigor\blog\module\post\PostFactory;
@@ -14,7 +13,6 @@ use grigor\blog\module\post\PostManageService;
 use grigor\blog\module\post\PostManageServiceProxy;
 use grigor\blog\module\post\PostReadRepository;
 use grigor\blog\module\post\PostRepository;
-use grigor\blog\module\post\PostResourceModel;
 use grigor\blog\module\post\TrashManageService;
 use grigor\blog\module\post\TrashManageServiceProxy;
 use grigor\blog\module\tag\api\TagRepositoryInterface;
@@ -29,23 +27,16 @@ return [
     },
 
     PostEditorInterface::class => PostEditor::class,
-    PostResourceModelInterface::class => PostResourceModel::class,
+
     PostRepository::class => [
         ['class' => PostRepository::class],
         [
             Instance::of(PostFactoryInterface::class),
             Instance::of(SaveStrategyInterface::class),
             Instance::of(DeleteStrategyInterface::class),
-            Instance::of(PostResourceModelInterface::class)
         ]
     ],
     PostRepositoryInterface::class => PostRepository::class,
-    PostReadRepository::class=> [
-        ['class' => PostReadRepository::class],
-        [
-            Instance::of(PostResourceModelInterface::class)
-        ]
-    ],
     PostReadRepositoryInterface::class => PostReadRepository::class,
     PostManageService::class => [
         ['class' => PostManageService::class],

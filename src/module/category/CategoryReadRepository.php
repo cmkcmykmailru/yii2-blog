@@ -4,21 +4,14 @@ namespace grigor\blog\module\category;
 
 use grigor\blog\module\category\api\CategoryInterface;
 use grigor\blog\module\category\api\CategoryReadRepositoryInterface;
-use grigor\blog\module\category\api\CategoryResourceModelInterface;
+use grigor\library\helpers\DefinitionHelper;
 use yii\data\ActiveDataProvider;
 use yii\data\DataProviderInterface;
-use yii\db\ActiveQuery;
 use yii\db\ActiveQueryInterface;
 use yii\helpers\ArrayHelper;
 
 class CategoryReadRepository implements CategoryReadRepositoryInterface
 {
-    public CategoryResourceModelInterface $resourceModel;
-
-    public function __construct(CategoryResourceModelInterface $resource)
-    {
-        $this->resourceModel = $resource;
-    }
 
     public function findAll(): DataProviderInterface
     {
@@ -76,10 +69,11 @@ class CategoryReadRepository implements CategoryReadRepositoryInterface
 
     protected function getQuery(): ActiveQueryInterface
     {
-        return $this->resourceModel->getQuery();
+        $categoryClass = DefinitionHelper::getDefinition(CategoryInterface::class);
+        return $categoryClass::find();
     }
 
-    private function getProvider(ActiveQuery $query): ActiveDataProvider
+    private function getProvider(ActiveQueryInterface $query): DataProviderInterface
     {
         return new ActiveDataProvider([
             'query' => $query,

@@ -7,7 +7,9 @@ use grigor\blog\module\post\api\PostFactoryInterface;
 use grigor\blog\module\post\api\PostInterface;
 use grigor\blog\module\post\api\PostRepositoryInterface;
 use grigor\blog\module\post\api\PostResourceModelInterface;
+use grigor\blog\module\tag\api\TagInterface;
 use grigor\library\exceptions\NotFoundException;
+use grigor\library\helpers\DefinitionHelper;
 use grigor\library\repositories\strategies\DeleteStrategyInterface;
 use grigor\library\repositories\strategies\SaveStrategyInterface;
 use yii\db\ActiveQuery;
@@ -18,7 +20,6 @@ class PostRepository implements PostRepositoryInterface
     private $factory;
     private $saveStrategy;
     private $deleteStrategy;
-    private $resourceModel;
 
     /**
      * PostRepository constructor.
@@ -27,14 +28,12 @@ class PostRepository implements PostRepositoryInterface
     public function __construct(
         PostFactoryInterface $factory,
         SaveStrategyInterface $saveStrategy,
-        DeleteStrategyInterface $deleteStrategy,
-        PostResourceModelInterface $resourceModel
+        DeleteStrategyInterface $deleteStrategy
     )
     {
         $this->factory = $factory;
         $this->saveStrategy = $saveStrategy;
         $this->deleteStrategy = $deleteStrategy;
-        $this->resourceModel = $resourceModel;
     }
 
     public function createPost(PostDto $dto): PostInterface
@@ -68,6 +67,7 @@ class PostRepository implements PostRepositoryInterface
 
     private function getQuery(): ActiveQuery
     {
-        return $this->resourceModel->getQuery();
+        $postClass = DefinitionHelper::getDefinition(PostInterface::class);
+        return $postClass::find();
     }
 }

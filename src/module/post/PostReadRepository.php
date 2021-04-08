@@ -4,20 +4,13 @@ namespace grigor\blog\module\post;
 
 use grigor\blog\module\post\api\PostInterface;
 use grigor\blog\module\post\api\PostReadRepositoryInterface;
-use grigor\blog\module\post\api\PostResourceModelInterface;
+use grigor\library\helpers\DefinitionHelper;
 use yii\data\ActiveDataProvider;
 use yii\data\DataProviderInterface;
-use yii\db\ActiveQuery;
 use yii\db\ActiveQueryInterface;
 
 class PostReadRepository implements PostReadRepositoryInterface
 {
-    public PostResourceModelInterface $resourceModel;
-
-    public function __construct(PostResourceModelInterface $resource)
-    {
-        $this->resourceModel = $resource;
-    }
 
     public function count(): int
     {
@@ -65,7 +58,7 @@ class PostReadRepository implements PostReadRepositoryInterface
         return $this->getQuery()->active()->andWhere(['id' => $id])->one();
     }
 
-    private function getProvider(ActiveQuery $query): ActiveDataProvider
+    private function getProvider(ActiveQueryInterface $query): DataProviderInterface
     {
         return new ActiveDataProvider([
             'query' => $query,
@@ -75,6 +68,7 @@ class PostReadRepository implements PostReadRepositoryInterface
 
     protected function getQuery(): ActiveQueryInterface
     {
-        return $this->resourceModel->getQuery();
+        $postClass = DefinitionHelper::getDefinition(PostInterface::class);
+        return $postClass::find();
     }
 }

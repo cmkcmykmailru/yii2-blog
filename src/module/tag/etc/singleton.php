@@ -5,14 +5,12 @@ use grigor\blog\module\tag\api\TagFactoryInterface;
 use grigor\blog\module\tag\api\TagManageServiceInterface;
 use grigor\blog\module\tag\api\TagReadRepositoryInterface;
 use grigor\blog\module\tag\api\TagRepositoryInterface;
-use grigor\blog\module\tag\api\TagResourceModelInterface;
 use grigor\blog\module\tag\TagEditor;
 use grigor\blog\module\tag\TagFactory;
 use grigor\blog\module\tag\TagManageService;
 use grigor\blog\module\tag\TagManageServiceProxy;
 use grigor\blog\module\tag\TagReadRepository;
 use grigor\blog\module\tag\TagRepository;
-use grigor\blog\module\tag\TagResourceModel;
 use grigor\library\repositories\strategies\DeleteStrategyInterface;
 use grigor\library\repositories\strategies\SaveStrategyInterface;
 use yii\di\Container;
@@ -23,21 +21,13 @@ return [
     TagFactoryInterface::class => function (Container $container) {
         return new TagFactory($container);
     },
-    TagReadRepository::class => [
-        ['class' => TagReadRepository::class],
-        [
-            Instance::of(TagResourceModelInterface::class)
-        ]
-    ],
     TagReadRepositoryInterface::class => TagReadRepository::class,
-    TagResourceModelInterface::class => TagResourceModel::class,
     TagRepository::class => [
         ['class' => TagRepository::class],
         [
             Instance::of(TagFactoryInterface::class),
             Instance::of(SaveStrategyInterface::class),
             Instance::of(DeleteStrategyInterface::class),
-            Instance::of(TagResourceModelInterface::class)
         ]
     ],
     TagRepositoryInterface::class => TagRepository::class,

@@ -5,12 +5,12 @@ namespace grigor\blog\module\category;
 use grigor\blog\module\category\api\CategoryFactoryInterface;
 use grigor\blog\module\category\api\CategoryInterface;
 use grigor\blog\module\category\api\CategoryRepositoryInterface;
-use grigor\blog\module\category\api\CategoryResourceModelInterface;
 use grigor\blog\module\category\api\dto\CategoryDto;
 use grigor\library\exceptions\NotFoundException;
+use grigor\library\helpers\DefinitionHelper;
 use grigor\library\repositories\strategies\DeleteStrategyInterface;
 use grigor\library\repositories\strategies\SaveStrategyInterface;
-use yii\db\ActiveQuery;
+use yii\db\ActiveQueryInterface;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
@@ -19,7 +19,6 @@ class CategoryRepository implements CategoryRepositoryInterface
     private $factory;
     private $saveStrategy;
     private $deleteStrategy;
-    private $resourceModel;
 
     /**
      * CategoryRepository constructor.
@@ -28,14 +27,12 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function __construct(
         CategoryFactoryInterface $factory,
         SaveStrategyInterface $saveStrategy,
-        DeleteStrategyInterface $deleteStrategy,
-        CategoryResourceModelInterface $resource
+        DeleteStrategyInterface $deleteStrategy
     )
     {
         $this->factory = $factory;
         $this->saveStrategy = $saveStrategy;
         $this->deleteStrategy = $deleteStrategy;
-        $this->resourceModel = $resource;
     }
 
     public function createCategory(CategoryDto $dto): CategoryInterface
@@ -71,8 +68,9 @@ class CategoryRepository implements CategoryRepositoryInterface
         $this->deleteStrategy->delete($category);
     }
 
-    private function getQuery(): ActiveQuery
+    private function getQuery(): ActiveQueryInterface
     {
-        return $this->resourceModel->getQuery();
+        $categoryClass = DefinitionHelper::getDefinition(CategoryInterface::class);
+        return $categoryClass::find();
     }
 }
