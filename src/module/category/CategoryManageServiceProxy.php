@@ -4,7 +4,7 @@ namespace grigor\blog\module\category;
 
 use grigor\blog\module\category\api\CategoryInterface;
 use grigor\blog\module\category\api\CategoryManageServiceInterface;
-use grigor\blog\module\category\api\dto\CategoryDto;
+use grigor\blog\module\category\api\commands\CategoryCommand;
 use grigor\library\services\ServiceEventsProxy;
 
 class CategoryManageServiceProxy extends ServiceEventsProxy implements CategoryManageServiceInterface
@@ -18,7 +18,7 @@ class CategoryManageServiceProxy extends ServiceEventsProxy implements CategoryM
         parent::__construct($realService, $config);
     }
 
-    public function create(CategoryDto $dto): CategoryInterface
+    public function create(CategoryCommand $dto): CategoryInterface
     {
         return $this->wrap([$this->realService, 'create'], ['dto' => $dto], [
             ServiceEventsProxy::EVENT_BEFORE_METHOD_EXECUTE => 'categoryCreate',
@@ -27,7 +27,7 @@ class CategoryManageServiceProxy extends ServiceEventsProxy implements CategoryM
         ]);
     }
 
-    public function edit(CategoryDto $dto): void
+    public function edit(CategoryCommand $dto): void
     {
         $this->wrap([$this->realService, 'edit'], ['dto' => $dto], [
             ServiceEventsProxy::EVENT_BEFORE_METHOD_EXECUTE => 'categoryEdit',

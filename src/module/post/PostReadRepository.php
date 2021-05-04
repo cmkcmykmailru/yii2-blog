@@ -4,7 +4,6 @@ namespace grigor\blog\module\post;
 
 use grigor\blog\module\post\api\PostInterface;
 use grigor\blog\module\post\api\PostReadRepositoryInterface;
-use grigor\library\helpers\DefinitionHelper;
 use yii\data\ActiveDataProvider;
 use yii\data\DataProviderInterface;
 use yii\db\ActiveQueryInterface;
@@ -68,7 +67,6 @@ class PostReadRepository implements PostReadRepositoryInterface
 
     protected function getQuery(): ActiveQueryInterface
     {
-        $postClass = DefinitionHelper::getDefinition(PostInterface::class);
-        return $postClass::find();
+        return Post::find();
     }
 }

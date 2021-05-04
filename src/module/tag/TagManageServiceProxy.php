@@ -2,11 +2,9 @@
 
 namespace grigor\blog\module\tag;
 
-use grigor\blog\module\tag\api\dto\TagDto;
-use grigor\blog\module\tag\TagForm;
+use grigor\blog\module\tag\api\commands\TagCommand;
 use grigor\blog\module\tag\api\TagInterface;
 use grigor\blog\module\tag\api\TagManageServiceInterface;
-use grigor\blog\module\tag\TagManageService;
 use grigor\library\services\ServiceEventsProxy;
 
 class TagManageServiceProxy extends ServiceEventsProxy implements TagManageServiceInterface
@@ -21,7 +19,7 @@ class TagManageServiceProxy extends ServiceEventsProxy implements TagManageServi
         parent::__construct($realService, $config);
     }
 
-    public function create(TagDto $dto): TagInterface
+    public function create(TagCommand $dto): TagInterface
     {
         return $this->wrap([$this->realService, 'create'], ['dto' => $dto], [
             ServiceEventsProxy::EVENT_BEFORE_METHOD_EXECUTE => 'tagCreate',
@@ -30,7 +28,7 @@ class TagManageServiceProxy extends ServiceEventsProxy implements TagManageServi
         ]);
     }
 
-    public function edit(TagDto $dto): void
+    public function edit(TagCommand $dto): void
     {
         $this->wrap([$this->realService, 'edit'], [ 'dto' => $dto], [
             ServiceEventsProxy::EVENT_BEFORE_METHOD_EXECUTE => 'tagEdit',

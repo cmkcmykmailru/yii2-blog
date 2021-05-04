@@ -3,9 +3,8 @@
 namespace grigor\blog\module\post;
 
 use grigor\blog\module\category\api\CategoryInterface;
-use grigor\blog\module\post\api\CategoryAssignmentInterface;
+use grigor\blog\module\category\Category;
 use grigor\blog\module\post\api\PostInterface;
-use grigor\blog\module\post\api\TagAssignmentInterface;
 use grigor\blog\module\post\events\ActivatedEvent;
 use grigor\blog\module\post\events\DraftedEvent;
 use grigor\blog\module\post\events\MainCategoryChangedEvent;
@@ -13,14 +12,14 @@ use grigor\blog\module\post\events\RestoredFromTrash;
 use grigor\blog\module\post\events\TrashedEvent;
 use grigor\blog\module\post\queries\PostQuery;
 use grigor\blog\module\tag\api\TagInterface;
+use grigor\blog\module\tag\Tag;
 use grigor\library\behaviors\MetaBehavior;
-use grigor\library\dto\Meta;
+use grigor\library\commands\MetaCommand;
+use grigor\library\contexts\AbstractEntity;
 use grigor\library\entity\EventTrait;
-use grigor\library\helpers\DefinitionHelper;
 use lhs\Yii2SaveRelationsBehavior\SaveRelationsBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
 use yii\web\UploadedFile;
 
 
@@ -36,13 +35,13 @@ use yii\web\UploadedFile;
  * @property integer $trash
  * @property string $meta_json
  *
- * @property Meta $meta
+ * @property MetaCommand $meta
  * @property CategoryInterface $category
  * @property CategoryInterface[] $categories
  * @property TagInterface[] $tags
  *
  */
-class Post extends ActiveRecord implements PostInterface
+class Post extends AbstractEntity implements PostInterface
 {
 
     public $meta;
@@ -105,8 +104,7 @@ class Post extends ActiveRecord implements PostInterface
                 return;
             }
         }
-        $categoryAssignmentClass = DefinitionHelper::getDefinition(CategoryAssignmentInterface::class);
-        $assignments[] = $categoryAssignmentClass::create($id);
+        $assignments[] = CategoryAssignment::create($id);
         $this->categoryAssignments = $assignments;
     }
 
@@ -136,8 +134,7 @@ class Post extends ActiveRecord implements PostInterface
                 return;
             }
         }
-        $tagAssignmentClass = DefinitionHelper::getDefinition(TagAssignmentInterface::class);
-        $assignments[] = $tagAssignmentClass::create($id);
+        $assignments[] = TagAssignment::create($id);
         $this->tagAssignments = $assignments;
     }
 
@@ -190,27 +187,27 @@ class Post extends ActiveRecord implements PostInterface
 
     public function getCategory(): ActiveQuery
     {
-        return $this->hasOne(DefinitionHelper::getDefinition(CategoryInterface::class), ['id' => 'category_id']);
+        return $this->hasOne(Category::class, ['id' => 'category_id']);
     }
 
     public function getCategoryAssignments(): ActiveQuery
     {
-        return $this->hasMany(DefinitionHelper::getDefinition(CategoryAssignmentInterface::class), ['post_id' => 'id']);
+        return $this->hasMany(CategoryAssignment::class, ['post_id' => 'id']);
     }
 
     public function getCategories(): ActiveQuery
     {
-        return $this->hasMany(DefinitionHelper::getDefinition(CategoryInterface::class), ['id' => 'category_id'])->via('categoryAssignments');
+        return $this->hasMany(Category::class, ['id' => 'category_id'])->via('categoryAssignments');
     }
 
     public function getTagAssignments(): ActiveQuery
     {
-        return $this->hasMany(DefinitionHelper::getDefinition(TagAssignmentInterface::class), ['post_id' => 'id']);
+        return $this->hasMany(TagAssignment::class, ['post_id' => 'id']);
     }
 
     public function getTags(): ActiveQuery
     {
-        return $this->hasMany(DefinitionHelper::getDefinition(TagInterface::class), ['id' => 'tag_id'])->via('tagAssignments');
+        return $this->hasMany(Tag::class, ['id' => 'tag_id'])->via('tagAssignments');
     }
 
     public function equalsContent($content): bool
@@ -234,4 +231,5 @@ class Post extends ActiveRecord implements PostInterface
     {
         return $this->trash === PostInterface::TRASH;
     }
+
 }

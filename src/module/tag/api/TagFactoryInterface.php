@@ -2,9 +2,9 @@
 
 namespace grigor\blog\module\tag\api;
 
-use grigor\blog\module\tag\api\dto\TagDto;
+use grigor\blog\module\tag\api\commands\TagCommand;
 
 interface TagFactoryInterface
 {
-    public function create(TagDto $dto): TagInterface;
+    public function create(TagCommand $dto): TagInterface;
 }

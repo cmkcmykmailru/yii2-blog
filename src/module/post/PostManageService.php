@@ -3,12 +3,12 @@
 namespace grigor\blog\module\post;
 
 use grigor\blog\module\category\api\CategoryRepositoryInterface;
-use grigor\blog\module\post\api\dto\PostDto;
+use grigor\blog\module\post\api\commands\PostCommand;
 use grigor\blog\module\post\api\PostManageServiceInterface;
-use grigor\blog\module\tag\api\dto\TagDto;
 use grigor\blog\module\post\api\PostEditorInterface;
 use grigor\blog\module\post\api\PostInterface;
 use grigor\blog\module\post\api\PostRepositoryInterface;
+use grigor\blog\module\tag\api\commands\TagCommand;
 use grigor\blog\module\tag\api\TagRepositoryInterface;
 use grigor\library\exceptions\NotFoundException;
 use grigor\library\factories\SlugFactoryInterface;
@@ -37,10 +37,10 @@ class PostManageService implements PostManageServiceInterface
     }
 
     /**
-     * @param PostDto $dto
+     * @param PostCommand $dto
      * @return PostInterface
      */
-    public function create(PostDto $dto): PostInterface
+    public function create(PostCommand $dto): PostInterface
     {
 
         if (!$this->categories->exist($dto->categories->main)) {
@@ -56,7 +56,7 @@ class PostManageService implements PostManageServiceInterface
 
         foreach ($dto->tags->tags as $tagName) {
             if (!$tag = $this->tags->findByName($tagName)) {
-                $tagDto = new TagDto($tagName, $this->slugFactory->toSlug($tagName));
+                $tagDto = new TagCommand($tagName, $this->slugFactory->toSlug($tagName));
                 $tag = $this->tags->createTag($tagDto);
                 $this->tags->save($tag);
             }
@@ -68,7 +68,7 @@ class PostManageService implements PostManageServiceInterface
         return $post;
     }
 
-    public function edit(PostDto $dto): void
+    public function edit(PostCommand $dto): void
     {
         $id = $dto->id;
         $post = $this->posts->get($id);
@@ -90,7 +90,7 @@ class PostManageService implements PostManageServiceInterface
 
         foreach ($dto->tags->tags as $tagName) {
             if (!$tag = $this->tags->findByName($tagName)) {
-                $tag = $this->tags->createTag(new TagDto($tagName, $this->slugFactory->toSlug($tagName)));
+                $tag = $this->tags->createTag(new TagCommand($tagName, $this->slugFactory->toSlug($tagName)));
                 $this->tags->save($tag);
             }
             $post->assignTag($tag->id);
@@ -113,4 +113,23 @@ class PostManageService implements PostManageServiceInterface
         $this->posts->save($post);
     }
 
+    public function remove(string $id): void
+    {
+        $post = $this->posts->get($id);
+        $this->posts->remove($post);
+    }
+
+    public function trash(string $id): void
+    {
+        $post = $this->posts->get($id);
+        $post->trash();
+        $this->posts->save($post);
+    }
+
+    public function restoreFromTrash(string $id): void
+    {
+        $post = $this->posts->get($id);
+        $post->restoreFromTrash();
+        $this->posts->save($post);
+    }
 }

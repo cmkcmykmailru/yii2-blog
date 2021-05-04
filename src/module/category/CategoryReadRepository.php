@@ -4,7 +4,7 @@ namespace grigor\blog\module\category;
 
 use grigor\blog\module\category\api\CategoryInterface;
 use grigor\blog\module\category\api\CategoryReadRepositoryInterface;
-use grigor\library\helpers\DefinitionHelper;
+use grigor\library\contexts\Inflator;
 use yii\data\ActiveDataProvider;
 use yii\data\DataProviderInterface;
 use yii\db\ActiveQueryInterface;
@@ -69,8 +69,7 @@ class CategoryReadRepository implements CategoryReadRepositoryInterface
 
     protected function getQuery(): ActiveQueryInterface
     {
-        $categoryClass = DefinitionHelper::getDefinition(CategoryInterface::class);
-        return $categoryClass::find();
+        return Category::find();
     }
 
     private function getProvider(ActiveQueryInterface $query): DataProviderInterface

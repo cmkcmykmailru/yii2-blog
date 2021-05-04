@@ -2,11 +2,11 @@
 
 namespace grigor\blog\module\category\api;
 
-use grigor\blog\module\category\api\dto\CategoryDto;
+use grigor\blog\module\category\api\commands\CategoryCommand;
 
 interface CategoryRepositoryInterface
 {
-    public function createCategory(CategoryDto $form): CategoryInterface;
+    public function createCategory(CategoryCommand $form): CategoryInterface;
 
     public function get(string $id): CategoryInterface;
 

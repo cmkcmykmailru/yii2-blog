@@ -2,16 +2,13 @@
 
 namespace grigor\blog\module\tag;
 
-use grigor\blog\module\tag\api\dto\TagDto;
+use grigor\blog\module\tag\api\commands\TagCommand;
 use grigor\blog\module\tag\api\TagFactoryInterface;
 use grigor\blog\module\tag\api\TagInterface;
 use grigor\blog\module\tag\api\TagRepositoryInterface;
-use grigor\blog\module\tag\api\TagResourceModelInterface;
 use grigor\library\exceptions\NotFoundException;
-use grigor\library\helpers\DefinitionHelper;
 use grigor\library\repositories\strategies\DeleteStrategyInterface;
 use grigor\library\repositories\strategies\SaveStrategyInterface;
-use yii\db\ActiveQuery;
 use yii\db\ActiveQueryInterface;
 
 class TagRepository implements TagRepositoryInterface
@@ -39,7 +36,7 @@ class TagRepository implements TagRepositoryInterface
         $this->deleteStrategy = $deleteStrategy;
     }
 
-    public function createTag(TagDto $form): TagInterface
+    public function createTag(TagCommand $form): TagInterface
     {
         return $this->factory->create($form);
     }
@@ -70,7 +67,7 @@ class TagRepository implements TagRepositoryInterface
 
     private function getQuery(): ActiveQueryInterface
     {
-        $tagClass = DefinitionHelper::getDefinition(TagInterface::class);
-        return $tagClass::find();
+        return Tag::find();
     }
+
 }

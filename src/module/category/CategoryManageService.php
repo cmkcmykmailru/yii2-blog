@@ -6,7 +6,7 @@ use grigor\blog\module\category\api\CategoryEditorInterface;
 use grigor\blog\module\category\api\CategoryInterface;
 use grigor\blog\module\category\api\CategoryManageServiceInterface;
 use grigor\blog\module\category\api\CategoryRepositoryInterface;
-use grigor\blog\module\category\api\dto\CategoryDto;
+use grigor\blog\module\category\api\commands\CategoryCommand;
 use grigor\blog\module\post\api\PostRepositoryInterface;
 
 class CategoryManageService implements CategoryManageServiceInterface
@@ -26,7 +26,7 @@ class CategoryManageService implements CategoryManageServiceInterface
         $this->editor = $editor;
     }
 
-    public function create(CategoryDto $dto): CategoryInterface
+    public function create(CategoryCommand $dto): CategoryInterface
     {
         $parent = $this->categories->get($dto->parentId);
         $category = $this->categories->createCategory($dto);
@@ -36,7 +36,7 @@ class CategoryManageService implements CategoryManageServiceInterface
         return $category;
     }
 
-    public function edit(CategoryDto $dto): void
+    public function edit(CategoryCommand $dto): void
     {
         $parent = $this->categories->get($dto->parentId);
         $category = $this->categories->get($dto->id);

@@ -1,12 +1,11 @@
 <?php
 
+namespace grigor\blog\module\category\api\commands;
 
-namespace grigor\blog\module\category\api\dto;
+use grigor\library\commands\Command;
+use grigor\library\commands\MetaCommand;
 
-
-use grigor\library\dto\Meta;
-
-class CategoryDto
+class CategoryCommand implements Command
 {
     public string $name;
     public string $slug;
@@ -14,22 +13,24 @@ class CategoryDto
     public ?string $description = null;
     public string $parentId;
     public ?string $id = null;
-    public Meta $meta;
+    public MetaCommand $meta;
 
     /**
      * CategoryDto constructor.
      * @param string $name
      * @param string $slug
      * @param string $title
-     * @param string|null $description
      * @param string $parentId
+     * @param MetaCommand $meta
+     * @param string|null $id
+     * @param string|null $description
      */
     public function __construct(
         string $name,
         string $slug,
         string $title,
         string $parentId,
-        Meta $meta,
+        MetaCommand $meta,
         ?string $id = null,
         ?string $description = null
     )

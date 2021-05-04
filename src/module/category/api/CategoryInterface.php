@@ -2,7 +2,7 @@
 
 namespace grigor\blog\module\category\api;
 
-use grigor\library\dto\Meta;
+use grigor\library\commands\MetaCommand;
 use yii\db\ActiveRecordInterface;
 
 /**
@@ -12,7 +12,7 @@ use yii\db\ActiveRecordInterface;
  * @property string $title
  * @property string $description
  * @property int $sort
- * @property Meta $meta
+ * @property MetaCommand $meta
  */
 interface CategoryInterface extends ActiveRecordInterface
 {

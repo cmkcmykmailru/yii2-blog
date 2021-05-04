@@ -1,8 +1,10 @@
 <?php
 
-namespace grigor\blog\module\post\api\dto;
+namespace grigor\blog\module\post\api\commands;
 
-class TagsDto
+use grigor\library\commands\Command;
+
+class TagsCommand implements Command
 {
     public array $tags = [];
 

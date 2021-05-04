@@ -1,8 +1,10 @@
 <?php
 
-namespace grigor\blog\module\tag\api\dto;
+namespace grigor\blog\module\tag\api\commands;
 
-class TagDto
+use grigor\library\commands\Command;
+
+class TagCommand implements Command
 {
     public string $name;
     public string $slug;
@@ -12,6 +14,7 @@ class TagDto
      * TagDto constructor.
      * @param string $name
      * @param string $slug
+     * @param string|null $id
      */
     public function __construct(string $name, string $slug, ?string $id = null)
     {

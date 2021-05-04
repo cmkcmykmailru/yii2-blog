@@ -1,8 +1,10 @@
 <?php
 
-namespace grigor\blog\module\post\api\dto;
+namespace grigor\blog\module\post\api\commands;
 
-class CategoriesDto
+use grigor\library\commands\Command;
+
+class CategoriesCommand implements Command
 {
     public string $main;
     public array $others = [];

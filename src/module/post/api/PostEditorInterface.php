@@ -2,9 +2,9 @@
 
 namespace grigor\blog\module\post\api;
 
-use grigor\blog\module\post\api\dto\PostDto;
+use grigor\blog\module\post\api\commands\PostCommand;
 
 interface PostEditorInterface
 {
-    public function edit(PostInterface $post, PostDto $dto): void;
+    public function edit(PostInterface $post, PostCommand $dto): void;
 }

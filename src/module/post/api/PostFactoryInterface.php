@@ -2,9 +2,9 @@
 
 namespace grigor\blog\module\post\api;
 
-use grigor\blog\module\post\api\dto\PostDto;
+use grigor\blog\module\post\api\commands\PostCommand;
 
 interface PostFactoryInterface
 {
-    public function create(PostDto $dto): PostInterface;
+    public function create(PostCommand $dto): PostInterface;
 }

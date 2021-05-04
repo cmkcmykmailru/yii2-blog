@@ -4,7 +4,7 @@ namespace grigor\blog\module\category;
 
 use grigor\blog\module\category\api\CategoryFactoryInterface;
 use grigor\blog\module\category\api\CategoryInterface;
-use grigor\blog\module\category\api\dto\CategoryDto;
+use grigor\blog\module\category\api\commands\CategoryCommand;
 use Ramsey\Uuid\Uuid;
 use yii\di\Container;
 
@@ -22,7 +22,7 @@ class CategoryFactory implements CategoryFactoryInterface
         $this->container = $container;
     }
 
-    public function create(CategoryDto $dto): CategoryInterface
+    public function create(CategoryCommand $dto): CategoryInterface
     {
         $category = $this->container->get(CategoryInterface::class);
         $category->id = Uuid::uuid4()->toString();

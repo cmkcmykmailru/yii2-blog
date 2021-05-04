@@ -11,6 +11,8 @@ use grigor\blog\module\tag\TagManageService;
 use grigor\blog\module\tag\TagManageServiceProxy;
 use grigor\blog\module\tag\TagReadRepository;
 use grigor\blog\module\tag\TagRepository;
+use grigor\library\repositories\strategies\BaseDeleteStrategy;
+use grigor\library\repositories\strategies\BaseSaveStrategy;
 use grigor\library\repositories\strategies\DeleteStrategyInterface;
 use grigor\library\repositories\strategies\SaveStrategyInterface;
 use yii\di\Container;
@@ -44,5 +46,7 @@ return [
             Instance::of(TagManageService::class)
         ]
     ],
-    TagManageServiceInterface::class => TagManageServiceProxy::class
+    TagManageServiceInterface::class => TagManageServiceProxy::class,
+    SaveStrategyInterface::class => BaseSaveStrategy::class,
+    DeleteStrategyInterface::class => BaseDeleteStrategy::class,
 ];

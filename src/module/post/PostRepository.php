@@ -2,17 +2,14 @@
 
 namespace grigor\blog\module\post;
 
-use grigor\blog\module\post\api\dto\PostDto;
+use grigor\blog\module\post\api\commands\PostCommand;
 use grigor\blog\module\post\api\PostFactoryInterface;
 use grigor\blog\module\post\api\PostInterface;
 use grigor\blog\module\post\api\PostRepositoryInterface;
-use grigor\blog\module\post\api\PostResourceModelInterface;
-use grigor\blog\module\tag\api\TagInterface;
 use grigor\library\exceptions\NotFoundException;
-use grigor\library\helpers\DefinitionHelper;
 use grigor\library\repositories\strategies\DeleteStrategyInterface;
 use grigor\library\repositories\strategies\SaveStrategyInterface;
-use yii\db\ActiveQuery;
+use yii\db\ActiveQueryInterface;
 
 class PostRepository implements PostRepositoryInterface
 {
@@ -20,10 +17,11 @@ class PostRepository implements PostRepositoryInterface
     private $factory;
     private $saveStrategy;
     private $deleteStrategy;
-
     /**
      * PostRepository constructor.
-     * @param $factory
+     * @param PostFactoryInterface $factory
+     * @param SaveStrategyInterface $saveStrategy
+     * @param DeleteStrategyInterface $deleteStrategy
      */
     public function __construct(
         PostFactoryInterface $factory,
@@ -36,7 +34,7 @@ class PostRepository implements PostRepositoryInterface
         $this->deleteStrategy = $deleteStrategy;
     }
 
-    public function createPost(PostDto $dto): PostInterface
+    public function createPost(PostCommand $dto): PostInterface
     {
         return $this->factory->create($dto);
     }
@@ -65,9 +63,9 @@ class PostRepository implements PostRepositoryInterface
         $this->deleteStrategy->delete($post);
     }
 
-    private function getQuery(): ActiveQuery
+    protected function getQuery(): ActiveQueryInterface
     {
-        $postClass = DefinitionHelper::getDefinition(PostInterface::class);
-        return $postClass::find();
+        return Post::find();
     }
+
 }

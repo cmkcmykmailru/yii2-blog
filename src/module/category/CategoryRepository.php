@@ -5,9 +5,8 @@ namespace grigor\blog\module\category;
 use grigor\blog\module\category\api\CategoryFactoryInterface;
 use grigor\blog\module\category\api\CategoryInterface;
 use grigor\blog\module\category\api\CategoryRepositoryInterface;
-use grigor\blog\module\category\api\dto\CategoryDto;
+use grigor\blog\module\category\api\commands\CategoryCommand;
 use grigor\library\exceptions\NotFoundException;
-use grigor\library\helpers\DefinitionHelper;
 use grigor\library\repositories\strategies\DeleteStrategyInterface;
 use grigor\library\repositories\strategies\SaveStrategyInterface;
 use yii\db\ActiveQueryInterface;
@@ -22,7 +21,9 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     /**
      * CategoryRepository constructor.
-     * @param $factory
+     * @param CategoryFactoryInterface $factory
+     * @param SaveStrategyInterface $saveStrategy
+     * @param DeleteStrategyInterface $deleteStrategy
      */
     public function __construct(
         CategoryFactoryInterface $factory,
@@ -35,7 +36,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         $this->deleteStrategy = $deleteStrategy;
     }
 
-    public function createCategory(CategoryDto $dto): CategoryInterface
+    public function createCategory(CategoryCommand $dto): CategoryInterface
     {
         return $this->factory->create($dto);
     }
@@ -70,7 +71,6 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     private function getQuery(): ActiveQueryInterface
     {
-        $categoryClass = DefinitionHelper::getDefinition(CategoryInterface::class);
-        return $categoryClass::find();
+        return Category::find();
     }
 }

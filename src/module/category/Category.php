@@ -5,7 +5,7 @@ namespace grigor\blog\module\category;
 use grigor\blog\module\category\api\CategoryInterface;
 use grigor\blog\module\category\queries\CategoryQuery;
 use grigor\library\behaviors\MetaBehavior;
-use grigor\library\dto\Meta;
+use grigor\library\commands\MetaCommand;
 use grigor\library\entity\EventTrait;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -17,7 +17,7 @@ use paulzi\nestedsets\NestedSetsBehavior;
  * @property string $slug
  * @property string $title
  * @property string $description
- * @property Meta $meta
+ * @property MetaCommand $meta
  */
 class Category extends ActiveRecord implements CategoryInterface
 {

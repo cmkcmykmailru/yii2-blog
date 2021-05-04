@@ -2,7 +2,7 @@
 
 namespace grigor\blog\module\tag;
 
-use grigor\blog\module\tag\api\dto\TagDto;
+use grigor\blog\module\tag\api\commands\TagCommand;
 use grigor\blog\module\tag\api\TagEditorInterface;
 use grigor\blog\module\tag\api\TagInterface;
 use grigor\blog\module\tag\api\TagManageServiceInterface;
@@ -22,14 +22,14 @@ class TagManageService implements TagManageServiceInterface
         $this->editor = $editor;
     }
 
-    public function create(TagDto $dto): TagInterface
+    public function create(TagCommand $dto): TagInterface
     {
         $tag = $this->tags->createTag($dto);
         $this->tags->save($tag);
         return $tag;
     }
 
-    public function edit(TagDto $dto): void
+    public function edit(TagCommand $dto): void
     {
         $tag = $this->tags->get($dto->id);
         $this->editor->edit($tag, $dto);

@@ -2,11 +2,11 @@
 
 namespace grigor\blog\module\post\api;
 
-use grigor\blog\module\post\api\dto\PostDto;
+use grigor\blog\module\post\api\commands\PostCommand;
 
 interface PostRepositoryInterface
 {
-    public function createPost(PostDto $dto): PostInterface;
+    public function createPost(PostCommand $dto): PostInterface;
 
     public function get($id): PostInterface;
 

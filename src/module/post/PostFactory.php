@@ -2,7 +2,7 @@
 
 namespace grigor\blog\module\post;
 
-use grigor\blog\module\post\api\dto\PostDto;
+use grigor\blog\module\post\api\commands\PostCommand;
 use grigor\blog\module\post\api\PostFactoryInterface;
 use grigor\blog\module\post\api\PostInterface;
 use grigor\blog\module\post\events\CreatedEvent;
@@ -23,7 +23,7 @@ class PostFactory implements PostFactoryInterface
         $this->container = $container;
     }
 
-    public function create(PostDto $dto): PostInterface
+    public function create(PostCommand $dto): PostInterface
     {
         $post = $this->container->get(PostInterface::class);
         $post->id = Uuid::uuid4()->toString();

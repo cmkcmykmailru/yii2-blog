@@ -1,19 +1,20 @@
 <?php
 
-namespace grigor\blog\module\post\api\dto;
+namespace grigor\blog\module\post\api\commands;
 
-use grigor\library\dto\Meta;
+use grigor\library\commands\Command;
+use grigor\library\commands\MetaCommand;
 
-class PostDto
+class PostCommand implements Command
 {
     public ?string $id = null;
     public ?string $title = null;
     public ?string $description = null;
     public ?string $content = null;
 
-    public CategoriesDto $categories;
-    public Meta $meta;
-    public TagsDto $tags;
+    public CategoriesCommand $categories;
+    public MetaCommand $meta;
+    public TagsCommand $tags;
 
     /**
      * PostDto constructor.
@@ -21,16 +22,16 @@ class PostDto
      * @param string $title
      * @param string $content
      * @param string|null $description
-     * @param CategoriesDto $categories
-     * @param Meta $meta
-     * @param TagsDto $tags
+     * @param CategoriesCommand $categories
+     * @param MetaCommand $meta
+     * @param TagsCommand $tags
      */
     public function __construct(
         string $title,
         string $content,
-        CategoriesDto $categories,
-        Meta $meta,
-        TagsDto $tags,
+        CategoriesCommand $categories,
+        MetaCommand $meta,
+        TagsCommand $tags,
         ?string $id = null,
         ?string $description = null
     )

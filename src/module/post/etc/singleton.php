@@ -6,16 +6,17 @@ use grigor\blog\module\post\api\PostFactoryInterface;
 use grigor\blog\module\post\api\PostManageServiceInterface;
 use grigor\blog\module\post\api\PostReadRepositoryInterface;
 use grigor\blog\module\post\api\PostRepositoryInterface;
-use grigor\blog\module\post\api\TrashManageServiceInterface;
 use grigor\blog\module\post\PostEditor;
 use grigor\blog\module\post\PostFactory;
 use grigor\blog\module\post\PostManageService;
 use grigor\blog\module\post\PostManageServiceProxy;
 use grigor\blog\module\post\PostReadRepository;
 use grigor\blog\module\post\PostRepository;
-use grigor\blog\module\post\TrashManageService;
-use grigor\blog\module\post\TrashManageServiceProxy;
 use grigor\blog\module\tag\api\TagRepositoryInterface;
+use grigor\library\factories\LatSlugFactory;
+use grigor\library\factories\SlugFactoryInterface;
+use grigor\library\repositories\strategies\BaseDeleteStrategy;
+use grigor\library\repositories\strategies\BaseSaveStrategy;
 use grigor\library\repositories\strategies\DeleteStrategyInterface;
 use grigor\library\repositories\strategies\SaveStrategyInterface;
 use yii\di\Container;
@@ -25,7 +26,6 @@ return [
     PostFactoryInterface::class => function (Container $container) {
         return new PostFactory($container);
     },
-
     PostEditorInterface::class => PostEditor::class,
 
     PostRepository::class => [
@@ -54,17 +54,8 @@ return [
         ]
     ],
     PostManageServiceInterface::class => PostManageServiceProxy::class,
-    TrashManageService::class => [
-        ['class' => TrashManageService::class],
-        [
-            Instance::of(PostRepositoryInterface::class)
-        ]
-    ],
-    TrashManageServiceProxy::class => [
-        ['class' => TrashManageServiceProxy::class],
-        [
-            Instance::of(TrashManageService::class)
-        ]
-    ],
-    TrashManageServiceInterface::class => TrashManageServiceProxy::class
+
+    SaveStrategyInterface::class => BaseSaveStrategy::class,
+    DeleteStrategyInterface::class => BaseDeleteStrategy::class,
+    SlugFactoryInterface::class => LatSlugFactory::class
 ];

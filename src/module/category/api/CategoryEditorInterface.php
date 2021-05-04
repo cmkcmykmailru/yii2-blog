@@ -2,9 +2,9 @@
 
 namespace grigor\blog\module\category\api;
 
-use grigor\blog\module\category\api\dto\CategoryDto;
+use grigor\blog\module\category\api\commands\CategoryCommand;
 
 interface CategoryEditorInterface
 {
-    public function edit(CategoryInterface $category, CategoryDto $form): void;
+    public function edit(CategoryInterface $category, CategoryCommand $form): void;
 }

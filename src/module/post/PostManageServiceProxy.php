@@ -2,7 +2,7 @@
 
 namespace grigor\blog\module\post;
 
-use grigor\blog\module\post\api\dto\PostDto;
+use grigor\blog\module\post\api\commands\PostCommand;
 use grigor\blog\module\post\api\PostInterface;
 use grigor\blog\module\post\api\PostManageServiceInterface;
 use grigor\library\services\ServiceEventsProxy;
@@ -18,7 +18,7 @@ class PostManageServiceProxy extends ServiceEventsProxy implements PostManageSer
         parent::__construct($realService, $config);
     }
 
-    public function create(PostDto $dto): PostInterface
+    public function create(PostCommand $dto): PostInterface
     {
         return $this->wrap([$this->realService, 'create'], ['dto' => $dto], [
             ServiceEventsProxy::EVENT_BEFORE_METHOD_EXECUTE => 'postCreate',
@@ -27,7 +27,7 @@ class PostManageServiceProxy extends ServiceEventsProxy implements PostManageSer
         ]);
     }
 
-    public function edit(PostDto $dto): void
+    public function edit(PostCommand $dto): void
     {
         $this->wrap([$this->realService, 'edit'], ['dto' => $dto], [
             ServiceEventsProxy::EVENT_BEFORE_METHOD_EXECUTE => 'postEdit',
@@ -53,5 +53,30 @@ class PostManageServiceProxy extends ServiceEventsProxy implements PostManageSer
             ServiceEventsProxy::EVENT_ERROR_METHOD_EXECUTE => 'postDraftError',
         ]);
     }
+    public function remove(string $id): void
+    {
+        $this->wrap([$this->realService, 'remove'], ['id' => $id], [
+            ServiceEventsProxy::EVENT_BEFORE_METHOD_EXECUTE => 'postRemove',
+            ServiceEventsProxy::EVENT_AFTER_METHOD_EXECUTE => 'postRemoved',
+            ServiceEventsProxy::EVENT_ERROR_METHOD_EXECUTE => 'postRemoveError',
+        ]);
+    }
 
+    public function trash(string $id): void
+    {
+        $this->wrap([$this->realService, 'trash'], ['id' => $id], [
+            ServiceEventsProxy::EVENT_BEFORE_METHOD_EXECUTE => 'postTrash',
+            ServiceEventsProxy::EVENT_AFTER_METHOD_EXECUTE => 'postTrashed',
+            ServiceEventsProxy::EVENT_ERROR_METHOD_EXECUTE => 'postTrashError',
+        ]);
+    }
+
+    public function restoreFromTrash(string $id): void
+    {
+        $this->wrap([$this->realService, 'restoreFromTrash'], ['id' => $id], [
+            ServiceEventsProxy::EVENT_BEFORE_METHOD_EXECUTE => 'postRestore',
+            ServiceEventsProxy::EVENT_AFTER_METHOD_EXECUTE => 'postRestored',
+            ServiceEventsProxy::EVENT_ERROR_METHOD_EXECUTE => 'postRestoreError',
+        ]);
+    }
 }
