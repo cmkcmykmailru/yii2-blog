@@ -18,7 +18,7 @@ class TagAssignment extends ActiveRecord implements TagAssignmentInterface
         return '{{%blog_tag_assignments}}';
     }
 
-    public function create($tagId): TagAssignmentInterface
+    public static function create($tagId): TagAssignmentInterface
     {
         $assignment = new self();
         $assignment->tag_id = $tagId;
