@@ -6,7 +6,7 @@ use yii\db\ActiveRecordInterface;
 
 interface TagAssignmentInterface extends ActiveRecordInterface
 {
-    public function create($tagId): TagAssignmentInterface;
+    public static function create($tagId): TagAssignmentInterface;
 
     public function isForTag($id): bool;
 }
